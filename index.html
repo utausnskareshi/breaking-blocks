@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BreakingBlocks">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="傾けて操作するブロック崩しPWA">
+<title>Breaking Blocks - 傾けるブロック崩し</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===== タイトル / 説明画面 ===== -->
+<section id="screen-title" class="screen active">
+  <div class="title-inner">
+    <h1 class="game-title">
+      <span class="title-line1">Breaking</span>
+      <span class="title-line2">Blocks</span>
+    </h1>
+    <p class="subtitle">傾けて遊ぶ次世代ブロック崩し</p>
+
+    <div class="hi-score">ハイスコア: <span id="hi-score-value">0</span></div>
+
+    <div class="menu-buttons">
+      <button id="btn-start" class="btn primary">▶ ゲーム開始</button>
+      <button id="btn-howto" class="btn">遊び方</button>
+      <button id="btn-install" class="btn">インストール方法</button>
+    </div>
+
+    <div id="panel-howto" class="panel" hidden>
+      <h2>遊び方</h2>
+      <ul class="howto-list">
+        <li>📱 <b>スマホを左右に傾ける</b>とバーが動きます</li>
+        <li>🎯 ボールを落とさずに、すべての破壊可能ブロックを消すとステージクリア</li>
+        <li>💎 光るブロックを壊すと<b>アイテム</b>が落下。バーで取ると効果発動</li>
+        <li>🔥 連続でブロックを壊すと<b>コンボ</b>でスコア倍率UP</li>
+        <li>🛡️ 灰色の<b>鋼鉄ブロック</b>は壊れません。跳ね返しに利用しよう</li>
+        <li>💥 オレンジの<b>爆発ブロック</b>は周囲を巻き込みます</li>
+        <li>❤️ 残機は3。すべてのボールを落とすとゲームオーバー</li>
+      </ul>
+
+      <h3>アイテム一覧</h3>
+      <ul class="item-list">
+        <li><span class="item-chip" style="background:#4ade80">L</span> バーが長くなる</li>
+        <li><span class="item-chip" style="background:#60a5fa">M</span> ボールが3つに増える（マルチボール）</li>
+        <li><span class="item-chip" style="background:#facc15">S</span> ボールがスローになる</li>
+        <li><span class="item-chip" style="background:#a78bfa">P</span> 貫通ボール（ブロックを貫く）</li>
+        <li><span class="item-chip" style="background:#f87171">T</span> マグネット（ボールがバーで止まる→タップで発射）</li>
+        <li><span class="item-chip" style="background:#fb923c">+</span> 残機+1</li>
+        <li><span class="item-chip" style="background:#22d3ee">★</span> スコア2倍ボーナス</li>
+      </ul>
+
+      <button class="btn close-panel" data-target="panel-howto">閉じる</button>
+    </div>
+
+    <div id="panel-install" class="panel" hidden>
+      <h2>PWAインストール手順</h2>
+
+      <h3>📱 iPhone (Safari)</h3>
+      <ol>
+        <li>Safariでこのページを開く</li>
+        <li>下部の<b>共有ボタン（□↑）</b>をタップ</li>
+        <li>「<b>ホーム画面に追加</b>」を選択</li>
+        <li>右上の「追加」をタップで完了</li>
+        <li>ホーム画面のアイコンから起動するとフルスクリーン＆オフライン動作</li>
+      </ol>
+
+      <h3>🤖 Android (Chrome)</h3>
+      <ol>
+        <li>Chromeでこのページを開く</li>
+        <li>右上のメニュー（⋮）をタップ</li>
+        <li>「<b>アプリをインストール</b>」または「<b>ホーム画面に追加</b>」を選択</li>
+        <li>確認ダイアログで「インストール」</li>
+      </ol>
+
+      <h3>💡 ヒント</h3>
+      <p>初回起動時、iOS 13以降では<b>モーションセンサーの許可</b>が求められます。「許可」を選択してください。許可しない場合は、画面のドラッグ／タッチでもバーを操作できます。</p>
+
+      <button class="btn close-panel" data-target="panel-install">閉じる</button>
+    </div>
+
+    <p class="footer-note">© 2026 Breaking Blocks - Tilt &amp; Smash!</p>
+  </div>
+</section>
+
+<!-- ===== ゲーム画面 ===== -->
+<section id="screen-game" class="screen">
+  <div class="hud">
+    <div class="hud-cell"><span class="hud-label">SCORE</span><span id="hud-score">0</span></div>
+    <div class="hud-cell"><span class="hud-label">STAGE</span><span id="hud-stage">1</span></div>
+    <div class="hud-cell"><span class="hud-label">LIFE</span><span id="hud-life">♥♥♥</span></div>
+    <div class="hud-cell"><span class="hud-label">COMBO</span><span id="hud-combo">0</span></div>
+  </div>
+
+  <canvas id="game-canvas"></canvas>
+
+  <div id="overlay" class="overlay" hidden>
+    <div class="overlay-inner">
+      <h2 id="overlay-title">Pause</h2>
+      <p id="overlay-text"></p>
+      <div class="overlay-buttons">
+        <button id="btn-resume" class="btn primary">続ける</button>
+        <button id="btn-restart" class="btn">リスタート</button>
+        <button id="btn-back" class="btn">タイトルへ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tap-to-launch" class="tap-hint" hidden>タップして発射</div>
+
+  <button id="btn-pause" class="btn-pause" aria-label="Pause">II</button>
+</section>
+
+<!-- ===== 横向き警告オーバーレイ（iOS Safari用フォールバック） ===== -->
+<div id="rotate-overlay" class="rotate-overlay">
+  <div class="rotate-inner">
+    <div class="rotate-icon">📱↻</div>
+    <h2>縦向きにしてください</h2>
+    <p>このゲームは縦向き専用です。<br>スマホを縦に持ち直してください。</p>
+  </div>
+</div>
+
+<!-- ===== モーション許可ダイアログ ===== -->
+<section id="screen-permission" class="screen">
+  <div class="perm-inner">
+    <h2>センサー使用の許可</h2>
+    <p>スマホを傾けてバーを操作するため、<br>モーションセンサーの利用許可が必要です。</p>
+    <button id="btn-perm-grant" class="btn primary">許可する</button>
+    <button id="btn-perm-skip" class="btn">タッチ操作で遊ぶ</button>
+  </div>
+</section>
+
+<script src="js/audio.js"></script>
+<script src="js/input.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/stage.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

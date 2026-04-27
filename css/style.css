@@ -1,0 +1,210 @@
+/* =========================================
+   Breaking Blocks - Style
+   ========================================= */
+:root{
+  --bg-0:#05060f;
+  --bg-1:#0a0a18;
+  --bg-2:#13132a;
+  --fg:#f1f5ff;
+  --accent:#7c5cff;
+  --accent-2:#22d3ee;
+  --warn:#f87171;
+  --good:#4ade80;
+  --gold:#facc15;
+  --safe-top:env(safe-area-inset-top, 0px);
+  --safe-bot:env(safe-area-inset-bottom, 0px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{
+  width:100%;height:100%;overflow:hidden;
+  background:var(--bg-0);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI",sans-serif;
+  user-select:none;-webkit-user-select:none;touch-action:none;overscroll-behavior:none;
+}
+
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ===== Screen system ===== */
+.screen{
+  position:fixed;inset:0;display:none;
+  padding-top:var(--safe-top);padding-bottom:var(--safe-bot);
+}
+.screen.active{display:flex}
+
+/* ===== Title screen ===== */
+#screen-title{
+  background:
+    radial-gradient(120% 80% at 50% -10%, #2a1d6b 0%, transparent 60%),
+    radial-gradient(80% 60% at 50% 110%, #0e3a5e 0%, transparent 70%),
+    var(--bg-1);
+  overflow-y:auto;align-items:flex-start;justify-content:center;
+}
+.title-inner{
+  width:100%;max-width:520px;padding:24px 22px 40px;display:flex;flex-direction:column;align-items:center;gap:18px;
+}
+.game-title{
+  font-size:clamp(40px,11vw,68px);line-height:1;text-align:center;letter-spacing:.02em;
+  font-weight:900;margin-top:8px;
+}
+.title-line1{display:block;background:linear-gradient(90deg,#7c5cff,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+.title-line2{display:block;background:linear-gradient(90deg,#f472b6,#facc15);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{opacity:.8;font-size:14px;text-align:center}
+.hi-score{
+  margin-top:4px;padding:6px 14px;background:rgba(255,255,255,.06);border-radius:999px;
+  font-size:13px;letter-spacing:.05em;
+}
+.hi-score span{color:var(--gold);font-weight:700;margin-left:6px}
+
+.menu-buttons{width:100%;display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.btn{
+  width:100%;padding:14px 18px;border-radius:14px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  color:var(--fg);font-size:16px;font-weight:600;
+  transition:transform .08s ease, background .15s ease;
+}
+.btn:active{transform:scale(.97)}
+.btn.primary{
+  background:linear-gradient(135deg,#7c5cff,#22d3ee);
+  border:none;box-shadow:0 8px 24px -8px rgba(124,92,255,.6);
+}
+
+.panel{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);border-radius:16px;
+  padding:18px;margin-top:8px;font-size:14px;line-height:1.7;
+}
+.panel h2{font-size:18px;margin-bottom:10px;color:var(--accent-2)}
+.panel h3{font-size:15px;margin:14px 0 6px;color:var(--gold)}
+.panel ul,.panel ol{padding-left:1.2em}
+.panel li{margin:4px 0}
+.panel b{color:#fff}
+.howto-list{list-style:none;padding-left:0}
+.howto-list li{padding:4px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.item-list{list-style:none;padding-left:0}
+.item-list li{display:flex;align-items:center;gap:10px;padding:4px 0}
+.item-chip{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:8px;
+  font-weight:900;color:#0a0a18;font-size:14px;
+}
+.close-panel{margin-top:14px}
+
+.footer-note{margin-top:20px;font-size:11px;opacity:.5;text-align:center}
+
+/* ===== Game screen ===== */
+#screen-game{
+  background:#000;
+  flex-direction:column;align-items:stretch;
+}
+.hud{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:6px;padding:8px 10px;
+  background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,0));
+  z-index:2;
+}
+.hud-cell{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.05);border-radius:8px;padding:4px 0;
+}
+.hud-label{font-size:9px;letter-spacing:.15em;opacity:.6}
+.hud-cell span:last-child{font-size:14px;font-weight:700;color:#fff}
+#hud-life{color:#f87171}
+
+#game-canvas{
+  flex:1;width:100%;display:block;background:#05060f;touch-action:none;
+}
+
+.btn-pause{
+  position:absolute;top:calc(var(--safe-top) + 6px);right:10px;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  color:#fff;font-weight:700;letter-spacing:1px;font-size:13px;
+  display:flex;align-items:center;justify-content:center;z-index:3;
+}
+
+.overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.78);
+  display:flex;align-items:center;justify-content:center;z-index:5;backdrop-filter:blur(6px);
+}
+.overlay[hidden]{display:none}
+.overlay-inner{
+  width:88%;max-width:420px;padding:24px;border-radius:18px;
+  background:rgba(20,20,40,.9);border:1px solid rgba(255,255,255,.08);
+  text-align:center;
+}
+.overlay-inner h2{font-size:22px;margin-bottom:8px;background:linear-gradient(90deg,#7c5cff,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+.overlay-inner p{font-size:14px;opacity:.85;margin-bottom:16px;line-height:1.6}
+.overlay-buttons{display:flex;flex-direction:column;gap:8px}
+
+.tap-hint{
+  position:absolute;left:50%;bottom:18%;transform:translateX(-50%);
+  padding:10px 20px;border-radius:999px;
+  background:rgba(255,255,255,.12);color:#fff;font-size:14px;font-weight:600;
+  pointer-events:none;animation:bob 1.2s ease-in-out infinite;z-index:3;
+}
+@keyframes bob{
+  0%,100%{transform:translate(-50%,0);opacity:.85}
+  50%{transform:translate(-50%,-6px);opacity:1}
+}
+
+/* ===== Permission screen ===== */
+#screen-permission{
+  background:var(--bg-1);align-items:center;justify-content:center;
+}
+.perm-inner{
+  width:88%;max-width:380px;padding:28px;border-radius:18px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  text-align:center;display:flex;flex-direction:column;gap:14px;
+}
+.perm-inner h2{font-size:20px;color:var(--accent-2)}
+.perm-inner p{font-size:14px;line-height:1.7;opacity:.85}
+
+/* ===== Landscape lock overlay (iOS Safari fallback) ===== */
+/* Hidden by default; shown only on touch devices in landscape */
+.rotate-overlay{
+  position:fixed;inset:0;
+  background:linear-gradient(135deg,#0a0a18 0%,#1a1040 100%);
+  display:none;align-items:center;justify-content:center;
+  z-index:9999;padding:24px;
+  padding-top:calc(env(safe-area-inset-top, 0px) + 24px);
+  padding-bottom:calc(env(safe-area-inset-bottom, 0px) + 24px);
+}
+
+/* Touch device + landscape ⇒ show the overlay (covers iPhone Safari) */
+@media (orientation: landscape) and (hover: none) and (pointer: coarse){
+  .rotate-overlay{display:flex !important}
+  /* Block scrolling / interaction underneath */
+  body{overflow:hidden}
+}
+
+.rotate-inner{
+  text-align:center;color:#fff;max-width:520px;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.rotate-icon{
+  font-size:64px;line-height:1;
+  animation:rotate-hint 2s ease-in-out infinite;
+  transform-origin:center center;
+}
+@keyframes rotate-hint{
+  0%,100%{transform:rotate(-90deg)}
+  40%,60%{transform:rotate(0deg)}
+}
+.rotate-inner h2{
+  font-size:24px;
+  background:linear-gradient(90deg,#7c5cff,#22d3ee);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.rotate-inner p{font-size:15px;line-height:1.7;opacity:.85}
+
+/* ===== Floating combo / message text ===== */
+.fly-text{
+  position:absolute;pointer-events:none;font-weight:900;font-size:22px;
+  text-shadow:0 2px 6px rgba(0,0,0,.6);animation:flyup 1s ease-out forwards;z-index:4;
+}
+@keyframes flyup{
+  0%{opacity:0;transform:translate(-50%,0) scale(.8)}
+  20%{opacity:1;transform:translate(-50%,-10px) scale(1.1)}
+  100%{opacity:0;transform:translate(-50%,-60px) scale(1)}
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Breaking Blocks - 傾けるブロック崩し",
+  "short_name": "BreakingBlocks",
+  "description": "スマホを傾けて操作する次世代ブロック崩しPWA",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a18",
+  "theme_color": "#0a0a18",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["games"]
+}
